@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Income Search</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Income Management</a></li>
+              <li class="breadcrumb-item active">Search Income</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+    <script>function addincome() {toastr.success('{{ msg }}')};window.onload = addincome;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ income }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+     <div class="row"> 
+<div class="col-md-5">
+  <div class="form-group">
+    <label for="incomehead">Start Date</label>
+<div class="input-group date" id="incomesearchdatestart" data-target-input="nearest">
+<input type="text" class="form-control datetimepicker-input" name="searchdatestart" data-target="#incomesearchdatestart" required>
+<div class="input-group-append" data-target="#incomesearchdatestart" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-5">
+  <div class="form-group">
+    <label for="incomehead">End Date</label>
+<div class="input-group date" id="incomesearchdateend" data-target-input="nearest">
+<input type="text" class="form-control datetimepicker-input" name="searchdateend" data-target="#incomesearchdateend" required>
+<div class="input-group-append" data-target="#incomesearchdateend" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+  <div class="form-group">
+  <label style="visibility: hidden;">search</label>
+<button type="submit" class="btn btn-block btn-primary">Search</button>
+</div>
+</div>
+
+</div>
+</form>
+  
+</div>
+</div>
+
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ incomes }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Income</th>
+<th>Income Head</th>
+<th>Invoice No</th>
+<th>Date</th>
+<th>Amount</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+  {% for income in allincomes %}
+<tr>
+<td>{{ income.name }}</td>
+<td>{{ income.incomehead }}</td>
+<td>{{ income.invoiceno }}</td>
+<td>{{ income.date | date:"d-m-Y" }}</td>
+<td>{{ income.amount }}</td>
+<td>{{ income.description }}</td>
+</tr>
+  {% endfor %}
+</tbody>
+<tfoot>
+<tr>
+<td colspan="4" class="text-right"><b>Grand Total</b></td>
+<td><b>{{ totalincomes.totalincome }}</b></td>
+<td></td>
+</tr>
+</tfoot>
+</table>
+<br><br>
+<div class="row mt-4">
+  <div class="col-md-6">
+    <div class="info-box bg-info">
+    <span class="info-box-icon"><i class="fa fa-money-bill"></i></span>
+    <div class="info-box-content">
+    <span class="info-box-text">Fee Collection</span>
+    <span class="info-box-number">{{ totalfeeincomes.totalfeeincome }}</span>
+    <span class="progress-description">
+    Total fee collected in this period
+    </span>
+    </div>
+    </div>
+    </div>
+    <!---->
+    {% if totalincomes.totalincome == None and totalfeeincomes.totalfeeincome != None %}
+    <div class="col-md-6">
+      <div class="info-box bg-success">
+      <span class="info-box-icon"><i class="fa fa-money-bill"></i></span>
+      <div class="info-box-content">
+      <span class="info-box-text">Net Income</span>
+      <span class="info-box-number" id="netincome">{{ totalfeeincomes.totalfeeincome }}</span>
+      <span class="progress-description">
+      Income from other sources + Fee Collection
+      </span>
+      </div>
+      </div>
+      </div>
+    {% elif totalincomes.totalincome != None and totalfeeincomes.totalfeeincome == None %}
+    <div class="col-md-6">
+      <div class="info-box bg-success">
+      <span class="info-box-icon"><i class="fa fa-money-bill"></i></span>
+      <div class="info-box-content">
+      <span class="info-box-text">Net Income</span>
+      <span class="info-box-number" id="netincome">{{ totalincomes.totalincome }}</span>
+      <span class="progress-description">
+      Income from other sources + Fee Collection
+      </span>
+      </div>
+      </div>
+      </div>
+    {% elif totalincomes.totalincome != None and totalfeeincomes.totalfeeincome != None %}
+    <!---->
+    <div class="col-md-6">
+      <div class="info-box bg-success">
+      <span class="info-box-icon"><i class="fa fa-money-bill"></i></span>
+      <div class="info-box-content">
+      <span class="info-box-text">Net Income</span>
+      <span class="info-box-number" id="netincome"></span>
+      <script>
+        let a = {{ totalincomes.totalincome }}
+        let b = {{ totalfeeincomes.totalfeeincome }}
+        
+        let c = a + b;
+        document.getElementById("netincome").innerHTML = c;
+     </script>
+      <span class="progress-description">
+      Income from other sources + Fee Collection
+      </span>
+      </div>
+      </div>
+      </div>
+      {% endif %}
+</div>
+</div>
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

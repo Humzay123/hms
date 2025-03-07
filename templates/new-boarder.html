@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">{{ title }}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Boarders Management</a></li>
+              <li class="breadcrumb-item active">Add Boarder</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+    <script>function newboarder() {toastr.success('{{msg}}')};window.onload = newboarder;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ header_title }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+  <div class="row">
+    <form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+<label for="name">Name</label>
+{{ form.name }}
+</div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+<label for="father_name">Father Name</label>
+{{ form.father_name }}
+</div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+<label for="cell_no">Cell No</label>
+{{ form.cell_no }}
+</div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+<label for="cell_no">Email</label>
+{{ form.email }}
+</div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+<label for="emergency_cell_no">Emergency Cell No</label>
+{{ form.emergency_cell_no }}
+</div>
+    </div>
+
+<div class="col-md-6">
+    <div class="form-group">
+      <label for="cnicb">Photo</label>
+        {{ form.photo }}
+    </div>
+</div>
+
+<div class="col-md-12">
+  <div class="form-group">
+<label for="address">Address</label>
+{{ form.address }}
+</div>
+</div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+      <label for="blood_group">Blood Group</label>
+      {{ form.blood_group }}
+      </div>
+          </div>
+
+    <div class="col-md-6">
+<div class="form-group">
+<label for="living_purpose">Living Purpose</label>
+{{ form.living_purpose }}
+</div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="">
+      <label for="date">Admission Date <span style="font-size: 10px;font-weight: normal;">(yyyy-mm-dd)</span></label>
+    <div class="input-group date" id="admission_date" data-target-input="nearest">
+    {{ form.admission_date }}
+    <div class="input-group-append" data-target="#admission_date" data-toggle="datetimepicker">
+    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="form-group">
+      <label for="feegroup">Assign Fee Master</label>
+      {{ form.feegroup }}
+      </div>
+          </div>
+
+    <div class="col-md-6">
+<div class="form-group">
+<label for="bed">Assign Bed</label>
+{{ form.bed }}
+</div>
+    </div>
+
+    <div class="col-md-6">
+<div class="form-group">
+<label for="status">Status</label>
+{{ form.status }}
+</div>
+    </div>
+
+
+<div class="col-md-12">
+  <div class="form-group">
+<label for="notes">Notes</label>
+{{ form.notes }}
+</div>
+</div>
+</div>
+  <div class="card-footer">
+<button type="submit" class="btn btn-block btn-primary">Save</button>
+</div>
+</form>
+  </div>
+</div>
+
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

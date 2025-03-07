@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Profit Search</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Profit</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+    <script>function addincome() {toastr.success('{{ msg }}')};window.onload = addincome;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ searchprofit }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+     <div class="row"> 
+<div class="col-md-5">
+  <div class="form-group">
+    <label for="incomehead">Start Date</label>
+<div class="input-group date" id="profitsearchdatestart" data-target-input="nearest">
+<input type="text" class="form-control datetimepicker-input" name="searchdatestart" data-target="#profitsearchdatestart" required>
+<div class="input-group-append" data-target="#profitsearchdatestart" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-5">
+  <div class="form-group">
+    <label for="incomehead">End Date</label>
+<div class="input-group date" id="profitsearchdateend" data-target-input="nearest">
+<input type="text" class="form-control datetimepicker-input" name="searchdateend" data-target="#profitsearchdateend" required>
+<div class="input-group-append" data-target="#profitsearchdateend" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+  <div class="form-group">
+  <label style="visibility: hidden;">search</label>
+<button type="submit" class="btn btn-block btn-primary">Search</button>
+</div>
+</div>
+
+</div>
+</form>
+  
+</div>
+</div>
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ profit }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<table class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Income</th>
+<th>Expenses</th>
+<th>Profit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><p id="income"></p></td>
+<td><p id="expense"></p></td>
+<td><p id="demo"></p></td>
+
+{% if totalfeeincomes.totalfeeincome == None and totalexpenses.totalexpense == None %}
+<script>
+let a = {{ totalincomes.totalincome }}
+let b = 0
+let c = 0
+
+/*Total income*/
+let i = a + b
+document.getElementById("income").innerHTML = i;
+/*Total expense*/
+document.getElementById("expense").innerHTML = c;
+/*Total profit*/
+let z = (a + b) - c;
+document.getElementById("demo").innerHTML = z;
+</script>
+{% elif totalfeeincomes.totalfeeincome == None and totalexpenses.totalexpense != None %}
+<script>
+  let a = {{ totalincomes.totalincome }}
+  let b = 0
+  let c = {{ totalexpenses.totalexpense }}
+  
+  /*Total income*/
+  let i = a + b
+  document.getElementById("income").innerHTML = i;
+  /*Total expense*/
+  document.getElementById("expense").innerHTML = c;
+  /*Total profit*/
+  let z = (a + b) - c;
+  document.getElementById("demo").innerHTML = z;
+  </script>
+{% elif totalfeeincomes.totalfeeincome != None and totalexpenses.totalexpense == None %}
+<script>
+  let a = {{ totalincomes.totalincome }}
+  let b = {{ totalfeeincomes.totalfeeincome }}
+  let c = 0
+  
+  /*Total income*/
+  let i = a + b
+  document.getElementById("income").innerHTML = i;
+  /*Total expense*/
+  document.getElementById("expense").innerHTML = c;
+  /*Total profit*/
+  let z = (a + b) - c;
+  document.getElementById("demo").innerHTML = z;
+  </script>
+{% elif totalfeeincomes.totalfeeincome != None and totalexpenses.totalexpense != None %}
+<script>
+  let a = {{ totalincomes.totalincome }}
+  let b = {{ totalfeeincomes.totalfeeincome }}
+  let c = {{ totalexpenses.totalexpense }}
+  
+  /*Total income*/
+  let i = a + b
+  document.getElementById("income").innerHTML = i;
+  /*Total expense*/
+  document.getElementById("expense").innerHTML = c;
+  /*Total profit*/
+  let z = (a + b) - c;
+  document.getElementById("demo").innerHTML = z;
+  </script>
+{% endif %}
+
+
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

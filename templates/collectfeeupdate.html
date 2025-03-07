@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">{{ collectfee }} - {{boarder.name}}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Fee</li>
+              <li class="breadcrumb-item active">Collect Fee</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+  <script>function collectfee() {toastr.success('{{ msg }}')};window.onload = collectfee;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ collectfee }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+     <div class="row"> 
+<div class="col-md-6" style="display:none !important;">
+  <div class="form-group">
+    <label for="name">Boarder</label>
+    {{ form.boarder }}
+</div> 
+</div>
+<div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Fee Type</label>
+  {{ form.feetype }}
+  </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Amount Due</label>
+      {{ form.amountdue }}
+  </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Amount Paid</label>
+      {{ form.amountpaid }}
+  </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Balance</label>
+      <input type="text" class="form-control" id="balance" name="balance" value="{{ collectfee.balance }}" readonly>
+  </div>
+  </div>
+<div class="col-md-12">
+  <div class="form-group">
+  <label style="visibility: hidden;">save</label>
+<button type="submit" class="btn btn-block btn-primary">Save</button>
+</div>
+</div>
+
+</div>
+</form>
+  
+</div>
+</div>
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">Fee Details</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+  <table id="example1" class="table table-bordered table-striped">
+    <thead>
+    <tr>
+    <th>Fee Type</th>
+    <th>Amount Due</th>
+    <th>Paid</th>
+    <th>Balance</th>
+    <th class="text-center">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for fee in fee_by_student|dictsortreversed:"id" %}
+    <tr>
+    <td>{{ fee.feetype }}</td>
+    <td>{{ fee.amountdue }}</td>
+    <td>{{ fee.amountpaid }}</td>
+    <td>{{ fee.balance }}</td>
+    <td class="text-center"><a href="{% url 'updatecollectfee' fee.id %}"><i class="fas fa-edit"></i></a></td>
+    </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+</div>
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+
+ 
+ 
+
+
+{% endblock %}

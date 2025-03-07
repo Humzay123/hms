@@ -1,0 +1,143 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+<div class="content-wrapper">
+   <!-- Content Header (Page header) -->
+   <div class="content-header">
+      <div class="container-fluid">
+         <div class="row mb-2">
+            <div class="col-sm-6">
+               <h1 class="m-0">Bed Management</h1>
+            </div>
+            <!-- /.col -->
+            <div class="col-sm-6">
+               <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item"><a href="#">Home</a></li>
+                  <li class="breadcrumb-item"><a href="#">Room Management</a></li>
+                  <li class="breadcrumb-item active">Bed</li>
+               </ol>
+            </div>
+            <!-- /.col -->
+         </div>
+         <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+   </div>
+   <!-- /.content-header -->
+   {% for msg in messages %}
+   <script>function addbed() {toastr.success('{{ msg }}')};window.onload = addbed;</script>
+   {% endfor %}
+   <!-- Main content -->
+   <div class="content">
+      <div class="container-fluid">
+         <div class="card card-default">
+            <div class="card-header">
+               <h3 class="card-title">{{ bed }}</h3>
+               <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                  </button>
+               </div>
+            </div>
+            <div class="card-body">
+               <form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="row">
+                     <div class="col-md-5">
+                        <div class="form-group">
+                           <label for="notes">Name</label>
+                           {{ form.name }}
+                        </div>
+                     </div>
+                     <div class="col-md-5">
+                        <div class="form-group">
+                           <label for="notes">Room</label>
+                           {{ form.room }}
+                        </div>
+                     </div>
+                     <div class="col-md-2">
+                        <div class="form-group">
+                           <label style="visibility: hidden;">save</label>
+                           <button type="submit" class="btn btn-block btn-primary">Save</button>
+                        </div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+         </div>
+         <div class="card card-default">
+            <div class="card-header">
+               <h3 class="card-title">{{ beds }}</h3>
+               <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                  <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove">
+                  <i class="fas fa-times"></i>
+                  </button>
+               </div>
+            </div>
+            <div class="card-body">
+               <table id="example1" class="table table-bordered table-striped">
+                  <thead>
+                     <tr>
+                        <th>Bed</th>
+                        <th>Room</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     {% for bed in allbeds %}
+                     <tr>
+                        <td>{{ bed.name }}</td>
+                        <td>{{ bed.room.name }}</td>
+                        <td class="text-center">
+                           
+                           {% if bed in assigned_beds %}
+                           <small class="badge badge-danger">Occupied</small>
+                           {% elif bed not in assigned_beds %}
+                           <small class="badge badge-success">Vacant</small>
+                           {% endif %}
+                        </td>
+                        <td class="text-center">
+                           <a href="{% url 'updatebed' bed.id %}"><i class="fas fa-edit"></i></a>
+                           <a href="" data-toggle="modal" data-target="#deteteModal{{bed.id}}"><i class="fas fa-trash"></i></a>
+                        </td>
+                     </tr>
+                     <!-- Delete Modal Starts -->
+<div class="modal fade" id="deteteModal{{bed.id}}" tabindex="-1" role="dialog" aria-labelledby="deteteModal{{bed.id}}Label" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="deteteModal{{bed.id}}Label">Delete</h5>
+         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">&times;</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         Are you sure you want to delete <b>{{ bed.name }}</b> and all of his record ?
+       </div>
+       <div class="modal-footer">
+         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+         <a type="button" class="btn btn-danger" href="{% url 'deletebed' bed.id %}">Delete</a>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!--Delete Modal Ends-->
+                     {% endfor %}
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+      <!-- /.container-fluid -->
+   </div>
+   <!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
+{% endblock %}

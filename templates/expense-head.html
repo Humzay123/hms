@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">{{ expenseheads }}</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Expense Management</a></li>
+              <li class="breadcrumb-item active">Expense Head</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+    <script>function addexpensehead() {toastr.success('{{ msg }}')};window.onload = addexpensehead;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ expensehead }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+  
+<form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+     <div class="row"> 
+<div class="col-md-5">
+  <label for="notes">Expense Head</label>
+  <div class="form-group">
+{{ form.name }}
+</div>
+</div>
+<div class="col-md-5">
+  <label for="notes">Description</label>
+  <div class="form-group">
+{{ form.description }}
+</div>
+</div>
+<div class="col-md-2">
+  <label style="visibility: hidden;">save</label>
+<button type="submit" class="btn btn-block btn-primary">Save</button>
+</div>
+
+</div>
+</form>
+  
+</div>
+</div>
+
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ expenseheads }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>No</th>
+<th>Expense Head</th>
+<th>Description</th>
+<th class="text-center">Action</th>
+</tr>
+</thead>
+<tbody>
+  {% for expensehead in allexpenseheads %}
+<tr>
+<td>{{ forloop.counter }}</td>
+<td>{{ expensehead.name }}</td>
+<td>{{ expensehead.description }}</td>
+<td class="text-center">
+  <a href="{% url 'updateexpensehead' expensehead.id %}"><i class="fas fa-edit"></i></a>
+  <a href="" data-toggle="modal" data-target="#deteteModal{{expensehead.id}}"><i class="fas fa-trash"></i></a>
+</td>
+</tr>
+<!-- Delete Modal Starts -->
+<div class="modal fade" id="deteteModal{{expensehead.id}}" tabindex="-1" role="dialog" aria-labelledby="deteteModal{{expensehead.id}}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deteteModal{{expensehead.id}}Label">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <b>{{ expensehead.name }}</b> and all of his record ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a type="button" class="btn btn-danger" href="{% url 'deleteexpensehead' expensehead.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal Ends-->
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

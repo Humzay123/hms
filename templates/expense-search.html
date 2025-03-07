@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Expense Search</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Expense Management</a></li>
+              <li class="breadcrumb-item active">Search Expense</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+    <script>function addexpense() {toastr.success('{{ msg }}')};window.onload = addexpense;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ expense }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+     <div class="row"> 
+<div class="col-md-5">
+  <div class="form-group">
+    <label for="expensehead">Start Date</label>
+<div class="input-group date" id="searchdatestart" data-target-input="nearest">
+<input type="text" class="form-control datetimepicker-input" name="searchdatestart" data-target="#searchdatestart" required>
+<div class="input-group-append" data-target="#searchdatestart" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-5">
+  <div class="form-group">
+    <label for="expensehead">End Date</label>
+<div class="input-group date" id="searchdateend" data-target-input="nearest">
+<input type="text" class="form-control datetimepicker-input" name="searchdateend" data-target="#searchdateend" required>
+<div class="input-group-append" data-target="#searchdateend" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="col-md-2">
+  <div class="form-group">
+  <label style="visibility: hidden;">search</label>
+<button type="submit" class="btn btn-block btn-primary">Search</button>
+</div>
+</div>
+
+</div>
+</form>
+  
+</div>
+</div>
+
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ expenses }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Expense</th>
+<th>Expense Head</th>
+<th>Invoice No</th>
+<th>Date</th>
+<th>Amount</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+  {% for expense in allexpenses %}
+<tr>
+<td>{{ expense.name }}</td>
+<td>{{ expense.expensehead }}</td>
+<td>{{ expense.invoiceno }}</td>
+<td>{{ expense.date | date:"d-m-Y" }}</td>
+<td>{{ expense.amount }}</td>
+<td>{{ expense.description }}</td>
+</tr>
+  {% endfor %}
+</tbody>
+<tfoot>
+<tr>
+<td colspan="4" class="text-right"><b>Grand Total</b></td>
+<td><b>{{ totalexpenses.totalexpense }}</b></td>
+<td></td>
+</tr>
+</tfoot>
+</table>
+</div>
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

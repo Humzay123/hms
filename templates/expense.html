@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Expense Management</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Expense Management</a></li>
+              <li class="breadcrumb-item active">Add Expense</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+{% for msg in messages %}
+    <script>function addexpense() {toastr.success('{{ msg }}')};window.onload = addexpense;</script>
+{% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ expense }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+  
+<form method="POST" action="" autocomplete="off" enctype="multipart/form-data">
+      {% csrf_token %}
+     <div class="row"> 
+<div class="col-md-6">
+  <div class="form-group">
+    <label for="expensehead">Expense Head</label>
+{{ form.expensehead }}
+</div>
+</div>
+<div class="col-md-6">
+  <div class="form-group">
+  <label for="notes">Name</label>
+{{ form.name }}
+</div>
+</div>
+<div class="col-md-4">
+  <div class="form-group">
+  <label for="notes">Invoice No</label>
+{{ form.invoiceno }}
+</div>
+</div>
+<div class="col-md-4">
+  <div class="">
+  <label for="date">Date <span style="font-size: 10px;font-weight: normal;">(yyyy-mm-dd)</span></label>
+<div class="input-group date" id="expensedate" data-target-input="nearest">
+{{ form.date }}
+<div class="input-group-append" data-target="#expensedate" data-toggle="datetimepicker">
+<div class="input-group-text"><i class="fa fa-calendar"></i></div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-4">
+  <div class="form-group">
+  <label for="notes">Amount</label>
+{{ form.amount }}
+</div>
+</div>
+<div class="col-md-10">
+  <div class="form-group">
+  <label for="notes">Description</label>
+{{ form.description }}
+</div>
+</div>
+<div class="col-md-2">
+  <div class="form-group">
+  <label style="visibility: hidden;">save</label>
+<button type="submit" class="btn btn-block btn-primary">Save</button>
+</div>
+</div>
+
+</div>
+</form>
+  
+</div>
+</div>
+
+
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">{{ expenses }}</h3>
+<div class="card-tools">
+<button type="button" class="btn btn-tool" data-card-widget="collapse">
+<i class="fas fa-minus"></i>
+</button>
+<button type="button" class="btn btn-tool" data-card-widget="remove">
+<i class="fas fa-times"></i>
+</button>
+</div>
+</div>
+
+<div class="card-body">
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Expense</th>
+<th>Expense Head</th>
+<th>Invoice No</th>
+<th>Date</th>
+<th>Amount</th>
+<th>Description</th>
+<th>Action</th>
+</tr>
+</thead>
+<tbody>
+  {% for expense in allexpenses %}
+<tr>
+<td>{{ expense.name }}</td>
+<td>{{ expense.expensehead }}</td>
+<td>{{ expense.invoiceno }}</td>
+<td>{{ expense.date | date:"d-m-Y" }}</td>
+<td>{{ expense.amount }}</td>
+<td>{{ expense.description }}</td>
+<td class="text-center"><a href="{% url 'updateexpense' expense.id %}"><i class="fas fa-edit"></i></a>
+  <a href="" data-toggle="modal" data-target="#deteteModal{{expense.id}}"><i class="fas fa-trash"></i></a>
+</td>
+</tr>
+<!-- Delete Modal Starts -->
+<div class="modal fade" id="deteteModal{{expense.id}}" tabindex="-1" role="dialog" aria-labelledby="deteteModal{{expense.id}}Label" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deteteModal{{expense.id}}Label">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <b>{{ expense.name }}</b> and all of his record ?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <a type="button" class="btn btn-danger" href="{% url 'deleteexpense' expense.id %}">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--Delete Modal Ends-->
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+
+
+
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content -->
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}

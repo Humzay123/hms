@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hostel Management System</title>
+
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<!-- Google Font: Source Sans Pro -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="{% static 'plugins/fontawesome-free/css/all.min.css' %}">
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<!--Toastr-->
+<link rel="stylesheet" href="{% static 'plugins/toastr/toastr.min.css' %}">
+<!-- Theme style -->
+<link rel="stylesheet" href="{% static 'css/adminlte.min.css' %}">
+<!--Custom Style-->
+<script src="{% static 'css/style.css' %}"></script>
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+<div class="card card-outline card-primary">
+<div class="card-header text-center">
+<a href="/" class="h1"><b>Royal</b>Hostel</a>
+</div>
+<div class="card-body">
+<p class="login-box-msg">Sign in to start your session</p>
+{% for msg in messages %}
+    <script>function addroom() {toastr.warning('{{ msg }}')};window.onload = addroom;</script>
+{% endfor %}
+<form action="" method="POST">
+    {% csrf_token %}
+<div class="input-group mb-3">
+<input type="text" class="form-control" name="username" placeholder="Email">
+<div class="input-group-append">
+<div class="input-group-text">
+<span class="fas fa-envelope"></span>
+</div>
+</div>
+</div>
+<div class="input-group mb-3">
+<input type="password" class="form-control" name="password" placeholder="Password">
+<div class="input-group-append">
+<div class="input-group-text">
+<span class="fas fa-lock"></span>
+</div>
+</div>
+</div>
+<div class="row">
+<div class="col-8">
+
+</div>
+
+<div class="col-4">
+{% if request.GET.next %}
+<input type="hidden" name="next" value="{{request.GET.next}}">
+{% endif %}
+<button type="submit" class="btn btn-primary btn-block">Sign In</button>
+</div>
+
+</div>
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+
+<script src="{% static 'plugins/toastr/toastr.min.js' %}"></script>
+
+<script src="{% static 'js/adminlte.min.js' %}"></script>
+</body>
+</html>

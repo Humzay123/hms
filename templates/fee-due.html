@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Fee Due</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Fee Management</a></li>
+              <li class="breadcrumb-item active">Fee Due</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    {% for msg in messages %}
+    <script>function collectfee() {toastr.success('{{ msg }}')};window.onload = collectfee;</script>
+  {% endfor %}
+    <!-- Main content -->
+    <div class="content">
+      <div class="container-fluid">
+    <!-- /.content-header -->
+<div class="card card-default">
+<div class="card-header">
+<h3 class="card-title">Boarders with fee due</h3>
+</div>
+<div class="card-body">
+<table id="example1" class="table table-bordered table-striped">
+<thead>
+<tr>
+<th>Name</th>
+<th>Cell No</th>
+<th>Fee Group</th>
+<th>Room - Bed</th>
+<th>Notes</th>
+<th class="text-center">Action</th>
+</tr>
+</thead>
+<tbody>
+  {% for boarder in boarders %}
+<tr>
+<td>{{ boarder.name }}</td>
+<td>{{ boarder.cell_no }}</td>
+<td>{{ boarder.feegroup }}</td>
+<td>{{ boarder.bed.name }}</td>
+<td>{{ boarder.notes }}</td>
+<td class="text-center">
+  <a href="{% url 'viewboarder' boarder.id %}"><i class="fas fa-eye"></i></a>
+  <a href="{% url 'updateboarder' boarder.id %}"><i class="fas fa-edit"></i></a>
+  <a href="{% url 'collectfee' boarder.id %}">PKR</a>
+</td>
+</tr>
+  {% endfor %}
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+  </div>
+  <!-- /.content-wrapper -->
+{% endblock %}
