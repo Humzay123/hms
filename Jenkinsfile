@@ -15,6 +15,21 @@ pipeline {
             }
         }
 
+        // NEW STEP: Generate Dockerfile
+        stage('Generate Dockerfile') {
+            steps {
+                script {
+                    sh '''
+                    cat <<EOF > Dockerfile
+                    FROM ubuntu:latest
+                    RUN apt-get update && apt-get install -y curl
+                    CMD ["echo", "Hello from Docker"]
+                    EOF
+                    '''
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -26,7 +41,7 @@ pipeline {
         stage('Login to DockerHub') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: "$DOCKER_CREDENTIALS", usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
                         sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
                     }
                 }
@@ -39,12 +54,6 @@ pipeline {
                     sh "docker push $DOCKER_IMAGE"
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            sh "docker image prune -f"  // Clean up unused images
         }
     }
 }
