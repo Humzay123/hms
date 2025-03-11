@@ -17,18 +17,18 @@ pipeline {
 
         // NEW STEP: Generate Dockerfile
         stage('Generate Dockerfile') {
-            steps {
-                script {
-                    sh """
-                    cat << EOF > Dockerfile
-                    FROM ubuntu:latest
-                    RUN apt-get update && apt-get install -y curl
-                    CMD ["echo", "Hello from Docker"]
-                    EOF
-                    """
-                }
-            }
+    steps {
+        script {
+            sh """
+            cat > Dockerfile <<EOF
+            FROM ubuntu:latest
+            RUN apt-get update && apt-get install -y curl
+            CMD ["echo", "Hello from Docker"]
+            EOF
+            """
         }
+    }
+}
 
         stage('Build Docker Image') {
             steps {
