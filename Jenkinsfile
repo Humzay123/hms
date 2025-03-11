@@ -29,6 +29,12 @@ pipeline {
         }
     }
 }
+        stage('Debug Dockerfile') {
+    steps {
+        sh 'ls -lah Dockerfile && cat Dockerfile'
+    }
+}
+
 
         stage('Build Docker Image') {
             steps {
