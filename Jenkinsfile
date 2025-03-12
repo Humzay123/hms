@@ -1,43 +1,37 @@
 pipeline {
     agent any
 
-    environment {
-        DOCKER_IMAGE = "hamzay123/hms-django:latest"
-        DOCKER_CREDENTIALS = "docker-hub-credentials" // Jenkins DockerHub credentials ID
-    }
-
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main',
-                    credentialsId: 'github-credentials',
-                    url: 'https://github.com/Humzay123/hms.git'
+                git branch: 'main', url: 'https://github.com/Humzay123/hms.git'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    sh "docker build -t $DOCKER_IMAGE ."
-                }
+                sh 'docker build -t hamzay123/hms-django:latest .'
             }
         }
 
         stage('Login to DockerHub') {
             steps {
-                script {
-                    withCredentials([usernamePassword(credentialsId: DOCKER_CREDENTIALS, usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
-                        sh "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin"
-                    }
+                withDockerRegistry([credentialsId: 'docker-hub-credentials', url: '']) {
+                    sh 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
                 }
             }
         }
 
-        stage('Push Image to DockerHub') {
+        stage('Push Docker Image') {
             steps {
-                script {
-                    sh "docker push $DOCKER_IMAGE"
-                }
+                sh 'docker push hamzay123/hms-django:latest'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                echo 'Deploying the application...'
+                // Add Kubernetes deployment or Docker run command here
             }
         }
     }
