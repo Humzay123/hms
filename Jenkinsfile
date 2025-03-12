@@ -2,39 +2,18 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "hamzay123/jenkin-hms:latest"
+        DOCKER_IMAGE = "hamzay123/hms-django:latest"
         DOCKER_CREDENTIALS = "docker-hub-credentials" // Jenkins DockerHub credentials ID
     }
 
     stages {
         stage('Clone Repository') {
             steps {
-                git branch: 'main', 
-                    credentialsId: 'github-credentials', 
+                git branch: 'main',
+                    credentialsId: 'github-credentials',
                     url: 'https://github.com/Humzay123/hms.git'
             }
         }
-
-        // NEW STEP: Generate Dockerfile
-        stage('Generate Dockerfile') {
-    steps {
-        script {
-            sh """
-            cat > Dockerfile <<EOF
-            FROM ubuntu:latest
-            RUN apt-get update && apt-get install -y curl
-            CMD ["echo", "Hello from Docker"]
-            EOF
-            """
-        }
-    }
-}
-        stage('Debug Dockerfile') {
-    steps {
-        sh 'ls -lah Dockerfile && cat Dockerfile'
-    }
-}
-
 
         stage('Build Docker Image') {
             steps {
